@@ -1,0 +1,103 @@
+﻿@model IList<TrainReservation.Models.Trip>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@functions{
+    public Station StationFrom { get; set; }
+    public Station StationTo { get; set; }
+
+    public DateTime visitTimeFrom { get; set; }
+    public DateTime visitTimeTo { get; set; }
+
+    public object FindFromTo(List<VisitingStation> VisitingStations)
+    {
+        StationFrom = new Station { Name = "unknown" };
+        StationTo = new Station { Name = "unknown2" };
+        visitTimeFrom = new DateTime(0001, 1, 1, 1, 1, 1);
+        visitTimeTo = new DateTime(0001, 1, 1, 1, 1, 1);
+        if (VisitingStations != null && VisitingStations.Count > 0)
+        {
+            visitTimeFrom = VisitingStations.First().VisitTime;
+            visitTimeTo = VisitingStations.First().VisitTime;
+            foreach (VisitingStation v in VisitingStations)
+            {
+                if (DateTime.Compare(visitTimeFrom, v.VisitTime) >= 0)
+                {
+                    visitTimeFrom = v.VisitTime;
+                    StationFrom = ViewBag.Stations.Find(v.StationId);
+                }
+
+
+                if (DateTime.Compare(visitTimeTo, v.VisitTime) <= 0)
+                {
+                    visitTimeTo = v.VisitTime;
+                    StationTo = ViewBag.Stations.Find(v.StationId);
+                }
+            }
+        }
+        return null;
+    }
+}
+<h1>Trips</h1>
+
+<ul class="navbar-nav">
+    @if (User.IsInRole("admin"))
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-primary mx-1">Create New</a>
+        </p>
+    }
+    
+    <form asp-controller="Trip" asp-action="Index" class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="from" class="col-sm-1 col-form-label m-1">From:</label>
+            <input type="text" class="form-control" id="from" name="StationFrom" />
+
+            <label for="to" class="col-sm-1 col-form-label">To:</label>
+            <input type="text" class="form-control" id="to" name="StationTo" />
+        </div>
+        <label for="SelectedDateTime" class="col-sm-2 col-form-label">Date and time:</label>
+        <input type="datetime-local" class="form-control" id="SelectedDateTime" name="SelectedDateTime" />
+        <input type="submit" class="btn btn-primary m-2" value="Search" />
+
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Train</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                @FindFromTo(item.VisitingStations)
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Train.Name</td>
+                <td>@StationFrom.Name</td>
+                <td>@StationTo.Name</td>
+                <td>@visitTimeFrom.ToString("HH:MM") - @visitTimeTo.ToString("HH:MM")</td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        <a asp-controller="Trip" asp-action="Update" asp-route-Id="@item.Id" class="btn btn-info mx-1">Update</a>
+                        <a asp-controller="Trip" asp-action="Delete" asp-route-Id="@item.Id" class="btn btn-danger mx-1">Delete</a>
+                        <a asp-controller="VisitingStation" asp-action="Index" asp-route-TripId="@item.Id" asp-route-TrainName="@item.Train.Name" class="btn btn-success mx-1">Visits</a>
+                    </td>
+                }
+                @if (User.IsInRole("user"))
+                {
+                    <td>
+                        <a asp-controller="Trip" asp-action="Update" asp-route-Id="@item.Id" class="btn btn-info mx-1">Buy</a>
+                    </td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>

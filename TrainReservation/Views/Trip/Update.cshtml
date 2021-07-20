@@ -1,0 +1,30 @@
+﻿@model TrainReservation.ViewModels.TripViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Trip</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update" asp-controller="Trip" asp-antiforgery="true">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="TrainId" class="control-label"></label>
+                <select asp-for="TrainId" class="form-control" asp-items="Model.Trains"></select>
+                <input type="hidden" name="TripId" value="@Model.TripId" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

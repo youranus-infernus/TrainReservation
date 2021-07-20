@@ -1,0 +1,40 @@
+﻿@model IEnumerable<TrainReservation.Models.VisitingStation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Visited stations during the trip Nr. @ViewBag.TripId</h1>
+
+<p>
+    <a asp-action="Create" asp-route-TripId="@ViewBag.TripId" class="btn btn-primary mx-1">Create New</a>
+    <a asp-action="Index" asp-controller="Trip" class="btn btn-success mx-1">Back to Trips</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Station)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VisitTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Station.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VisitTime)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

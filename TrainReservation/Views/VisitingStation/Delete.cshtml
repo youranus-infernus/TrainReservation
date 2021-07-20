@@ -1,0 +1,44 @@
+﻿@model TrainReservation.Models.VisitingStation
+
+<form method="post" asp-controller="VisitingStation" asp-action="DeletePost">
+    <input asp-for="Id" hidden />
+    <div class="border p-3" style="margin: 0 auto">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-black-50 pl-3" style="margin: auto">Delete Trip</h2>
+        </div>
+        <div class="row" style="margin: 0 auto">
+            <div class="col-12">
+
+                <div class="form group row" style="margin: 0 auto">
+                    <div class="col-3" style="margin: 0 auto">
+                        <h6>Trip Id</h6>
+                        <input asp-for="TripId" disabled class="form-control" />
+                    </div>
+                    <div class="col-3" style="margin: 0 auto">
+                        <h6>Train Name</h6>
+                        <input asp-for="Trip.Train.Name" disabled class="form-control" />
+                    </div>
+                    <div class="col-3" style="margin: 0 auto">
+                        <h6>Station Name</h6>
+                        <input asp-for="Station.Name" disabled class="form-control" />
+                    </div>
+                    <div class="col-3" style="margin: 0 auto">
+                        <h6>Visit Time</h6>
+                        <input asp-for="VisitTime" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row" style="margin:0 auto">
+                    <div class="col-8 text-center row" style="margin:0 auto">
+                        <div class="col p-3" style="margin:0 auto">
+                            <input type="submit" class="btn btn-danger w-75" value="Delete" />
+                        </div>
+                        <div class="col p-3" style="margin:0 auto">
+                            <a asp-controller="VisitingStation" asp-action="Index" asp-route-TripId="@Model.TripId" asp-route-TrainName="@Model.Trip.Train.Name" class="btn btn-success mx-1">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
