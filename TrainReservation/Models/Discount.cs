@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace TrainReservation.Models
 {
-    public class Seat
+    public class Discount
     {
         [Key]
         public int Id { get; set; }
-        public int SeatNumber { get; set; }
-        public float Price { get; set; }
-        public RailCar RailCar { get; set; }
-        public int RailCarId { get; set; }
-        public bool IsOccupied { get; set; }
+        public int Percent { get; set; }
+        public string Name { get; set; }
     }
 }

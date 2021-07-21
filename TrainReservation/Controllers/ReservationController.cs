@@ -8,9 +8,14 @@ namespace TrainReservation.Controllers
 {
     public class ReservationController : Controller
     {
-        public IActionResult Index()
+        //Get Create
+        public IActionResult Create(int TripId)
         {
             return View();
         }
+
+
+
+
     }
 }
