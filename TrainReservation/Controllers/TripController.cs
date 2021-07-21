@@ -35,9 +35,9 @@ namespace TrainReservation.Controllers
             ViewBag.Stations = _db.Stations;
 
             IsDaysСoincide isDaysСoincide = (dateTime1, dateTime2) => (dateTime1.Year == dateTime2.Year &&
-                                                                                           dateTime1.Month == dateTime2.Month &&
-                                                                                           dateTime1.Day == dateTime2.Day &&
-                                                                                           dateTime1.TimeOfDay > dateTime2.TimeOfDay);
+                                                                                         dateTime1.Month == dateTime2.Month &&
+                                                                                         dateTime1.Day == dateTime2.Day &&
+                                                                                         dateTime1.TimeOfDay > dateTime2.TimeOfDay);
 
             if (SelectedDateTime.Year != 0001)
             { 

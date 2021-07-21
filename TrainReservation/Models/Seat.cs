@@ -10,6 +10,7 @@ namespace TrainReservation.Models
     {
         [Key]
         public int Id { get; set; }
+        public int SeatNumber { get; set; }
         public float Price { get; set; }
         public RailCar RailCar { get; set; }
         public int RailCarId { get; set; }

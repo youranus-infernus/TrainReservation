@@ -1,0 +1,33 @@
+﻿@model TrainReservation.Models.RailCar
+
+<form method="post" asp-controller="RailCar" asp-action="Update">
+    <input asp-for="Id" hidden />
+    <div class="border p-3" style="margin: 0 auto">
+        <div class="form-group row">
+            <h2 class="text-black-50 pl-3" style="margin: auto">Update Railcar</h2>
+        </div>
+        <div class="row" style="margin: 0 auto">
+            <div class="col-12">
+
+                <div class="form group row">
+                    <div class="col-4" style="margin:0 auto">
+                        <input asp-for="RailcarNumber" class="form-control" />
+                        <span asp-validation-for="RailcarNumber" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" name="TrainId" value="@ViewBag.TrainId" />
+                </div>
+                <div class="form-group row" style="margin:0 auto">
+                    <div class="col-8 text-center row" style="margin:0 auto">
+                        <div class="col p-3" style="margin:0 auto">
+                            <input type="submit" class="btn btn-info w-75" value="Update" />
+                        </div>
+                        <div class="col p-3" style="margin:0 auto">
+                            <a asp-action="Index" asp-route-TrainId="@ViewBag.TrainId" class="btn btn-danger w-75">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

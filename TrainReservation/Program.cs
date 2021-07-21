@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrainReservation.Areas.Identity.Data;
+using TrainReservation.Data;
+using TrainReservation.Initializers;
 
 namespace TrainReservation
 {
@@ -27,6 +29,8 @@ namespace TrainReservation
                     var userManager = services.GetRequiredService<UserManager<TrainReservationUser>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     await RoleInitializer.InitializeAsync(userManager, rolesManager);
+                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    await TrainInitializer.InitializeAsync(context);
                 }
                 catch (Exception ex)
                 {

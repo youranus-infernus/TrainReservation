@@ -13,5 +13,6 @@ namespace TrainReservation.Models
         public int RailcarNumber { get; set; }
         public Train Train { get; set; }
         public int TrainId { get; set; }
+        public List<Seat> Seats { get; set; }
     }
 }

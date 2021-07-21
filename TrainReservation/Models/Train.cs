@@ -14,5 +14,6 @@ namespace TrainReservation.Models
         [DisplayName("Train Name")]
         [Required]
         public string Name { get; set; }
+        public List<RailCar> RailCars { get; set; }
     }
 }

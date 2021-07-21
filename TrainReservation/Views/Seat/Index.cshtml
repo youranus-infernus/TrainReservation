@@ -1,0 +1,63 @@
+﻿@model IList<TrainReservation.Models.Seat>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+
+        <div class="col-6">
+            <h1 class="text">Seats List for </h1>
+            <h3 class="text-primary">Train: @ViewBag.TrainName </h3>
+            <h3 class="text-primary">Railcar number: @ViewBag.RailCarNumber </h3>
+
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="Seat" asp-action="Create" asp-route-RailCarId="@ViewBag.RailCarId" asp-route-TrainName="@ViewBag.TrainName" class="btn btn-primary mt-5">Create new Seat</a>
+            <a asp-controller="RailCar" asp-action="Index" asp-route-TrainId="@ViewBag.TrainId" class="btn btn-warning mt-5">Back to RailCar List</a>
+        </div>
+    </div>
+
+    <br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bodered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Seat Number
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var seat in Model)
+                {
+                    <tr>
+                        <td width="35">@seat.SeatNumber</td>
+                        <td width="35">@seat.Price</td>
+                        <td width="30">
+                            <div class="w-50 btn-group" role="group">
+                                <a asp-controller="Seat" asp-action="Update" asp-route-Id="@seat.Id" asp-route-RailCarId="@ViewBag.RailCarId" asp-route-TrainName="@ViewBag.TrainName" class="btn btn-info mx-1">Update</a>
+                                <a asp-controller="Seat" asp-action="Delete" asp-route-Id="@seat.Id" asp-route-RailCarId="@ViewBag.RailCarId" asp-route-TrainName="@ViewBag.TrainName" class="btn btn-danger mx-1">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No railcars created yet</p>
+    }
+</div>
+

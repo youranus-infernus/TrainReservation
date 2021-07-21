@@ -20,6 +20,8 @@ namespace TrainReservation.Data
         public DbSet<VisitingStation> VisitingStations { get; set; }
         public DbSet<Train> Trains { get; set; }
         public DbSet<Trip> Trips { get; set; }
+        public DbSet<RailCar> RailCars { get; set; }
+        public DbSet<Seat> Seats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
