@@ -31,6 +31,7 @@ namespace TrainReservation
                     await RoleInitializer.InitializeAsync(userManager, rolesManager);
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     await TrainInitializer.InitializeAsync(context);
+                    await DiscountInitializer.InitializeAsync(context);
                 }
                 catch (Exception ex)
                 {
