@@ -12,7 +12,8 @@ namespace TrainReservation.ViewModels
         public int TripId { get; set; }
         public int TrainId { get; set; }
         public SelectList Trains { get; set; }
-        public Station StationFrom { get; set; }
-        public Station StationTo { get; set; }
+        public int StationFromId { get; set; }
+        public int StationToId { get; set; }
+        public SelectList Stations { get; set; }
     }
 }

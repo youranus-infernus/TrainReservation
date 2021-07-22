@@ -9,7 +9,7 @@ namespace TrainReservation.Controllers
     public class ReservationController : Controller
     {
         //Get Create
-        public IActionResult Create(int TripId)
+        public IActionResult RailCars(int Trip)
         {
             return View();
         }

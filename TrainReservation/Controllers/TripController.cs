@@ -24,13 +24,14 @@ namespace TrainReservation.Controllers
         delegate bool IsDaysСoincide(DateTime datetime1, DateTime datetime2);
 
         //[Authorize(Roles = "admin, user")]
-        public IActionResult Index(string StationFrom, string StationTo, DateTime SelectedDateTime)
+        public IActionResult Index(string StationFromName, string StationToName, DateTime SelectedDateTime)
         {
             var visitingStations = _db.VisitingStations.Include(t => t.Station).Include(t => t.Trip).ToList();
-            var trips = _db.Trips.Include(t => t.Train);
+            var trips = _db.Trips.Include(t => t.Train).ThenInclude(r => r.RailCars).ThenInclude(s => s.Seats);
 
             List<Trip> result = new List<Trip>();
             List<Trip> superresult = new List<Trip>();
+
 
             ViewBag.Stations = _db.Stations;
 
@@ -59,22 +60,17 @@ namespace TrainReservation.Controllers
                              select t).ToList();
             }
 
-            if (!String.IsNullOrEmpty(StationFrom) && !String.IsNullOrEmpty(StationTo))
+            if (!String.IsNullOrEmpty(StationFromName) && !String.IsNullOrEmpty(StationToName))
             {
-                /*
-                var visitingStations2 = from visit in _db.VisitingStations.Include(t => t.Station).AsEnumerable()
-                                        where visit.Station.Name.Contains(StationFrom) || visit.Station.Name.Contains(StationTo)
-                                        select visit;
-                */
 
                 var selected = from trip in trips.AsEnumerable()
                                join v in visitingStations on trip.Id equals v.TripId
-                               where (v.Station.Name.Contains(StationFrom))
+                               where v.Station.Name.Contains(StationFromName)
                                select trip;
-                
+
                 var selected2 = from trip in selected
                                 join v in visitingStations on trip.Id equals v.TripId
-                               where (v.Station.Name.Contains(StationTo))
+                               where (v.Station.Name.Contains(StationToName))
                                select trip;
                 
                 result = selected.ToList();
@@ -85,8 +81,8 @@ namespace TrainReservation.Controllers
                 {
                     foreach (Trip trip in result)
                     {
-                        var FromVisit = trip.VisitingStations.First(v => v.Station.Name.Contains(StationFrom));
-                        var ToVisit = trip.VisitingStations.First(v => v.Station.Name.Contains(StationTo)); ;
+                        var FromVisit = trip.VisitingStations.First(v => v.Station.Name.Contains(StationFromName));
+                        var ToVisit = trip.VisitingStations.First(v => v.Station.Name.Contains(StationToName)); ;
 
                         if(FromVisit.VisitTime < ToVisit.VisitTime)
                         {
@@ -94,11 +90,15 @@ namespace TrainReservation.Controllers
                             {
                                 if (isDaysСoincide(FromVisit.VisitTime, SelectedDateTime))
                                 {
+                                    trip.SelectedStationFrom = FromVisit.Station;
+                                    trip.SelectedStationTo = ToVisit.Station;
                                     superresult.Add(trip);
                                 }
                             }
                             else
                             {
+                                trip.SelectedStationFrom = FromVisit.Station;
+                                trip.SelectedStationTo = ToVisit.Station;
                                 superresult.Add(trip);
                             }
                         }

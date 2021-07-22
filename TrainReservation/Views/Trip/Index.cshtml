@@ -10,7 +10,7 @@
     public DateTime visitTimeFrom { get; set; }
     public DateTime visitTimeTo { get; set; }
 
-    public object FindFromTo(List<VisitingStation> VisitingStations)
+    public object FindFromTo(List<VisitingStation> VisitingStations, Station SelectedStationFrom, Station SelectedStationTo)
     {
         StationFrom = new Station { Name = "unknown" };
         StationTo = new Station { Name = "unknown2" };
@@ -22,17 +22,32 @@
             visitTimeTo = VisitingStations.First().VisitTime;
             foreach (VisitingStation v in VisitingStations)
             {
-                if (DateTime.Compare(visitTimeFrom, v.VisitTime) >= 0)
+
+                if (SelectedStationFrom != null && SelectedStationFrom.Id == v.Station.Id)
                 {
                     visitTimeFrom = v.VisitTime;
-                    StationFrom = ViewBag.Stations.Find(v.StationId);
+                }
+                else
+                {
+                    if (DateTime.Compare(visitTimeFrom, v.VisitTime) >= 0)
+                    {
+                        visitTimeFrom = v.VisitTime;
+                        StationFrom = ViewBag.Stations.Find(v.StationId);
+                    }
                 }
 
 
-                if (DateTime.Compare(visitTimeTo, v.VisitTime) <= 0)
+                if (SelectedStationTo != null && SelectedStationTo.Id == v.Station.Id)
                 {
                     visitTimeTo = v.VisitTime;
-                    StationTo = ViewBag.Stations.Find(v.StationId);
+                }
+                else
+                {
+                    if (DateTime.Compare(visitTimeTo, v.VisitTime) <= 0)
+                    {
+                        visitTimeTo = v.VisitTime;
+                        StationTo = ViewBag.Stations.Find(v.StationId);
+                    }
                 }
             }
         }
@@ -48,14 +63,14 @@
             <a asp-action="Create" class="btn btn-primary mx-1">Create New</a>
         </p>
     }
-    
+
     <form asp-controller="Trip" asp-action="Index" class="form-inline">
         <div class="form-group mx-sm-3 mb-2">
             <label for="from" class="col-sm-1 col-form-label m-1">From:</label>
-            <input type="text" class="form-control" id="from" name="StationFrom" />
+            <input type="text" class="form-control" id="from" name="StationFromName" />
 
             <label for="to" class="col-sm-1 col-form-label">To:</label>
-            <input type="text" class="form-control" id="to" name="StationTo" />
+            <input type="text" class="form-control" id="to" name="StationToName" />
         </div>
         <label for="SelectedDateTime" class="col-sm-2 col-form-label">Date and time:</label>
         <input type="datetime-local" class="form-control" id="SelectedDateTime" name="SelectedDateTime" />
@@ -65,24 +80,77 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Train</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Time</th>
-                <th>Actions</th>
+                <th>Route</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Travel time</th>
+                <th>Free Seats</th>
+                <th>Booking</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                @FindFromTo(item.VisitingStations)
+                @FindFromTo(item.VisitingStations, item.SelectedStationFrom, item.SelectedStationTo)
             <tr>
-                <td>@item.Id</td>
                 <td>@item.Train.Name</td>
-                <td>@StationFrom.Name</td>
-                <td>@StationTo.Name</td>
-                <td>@visitTimeFrom.ToString("HH:MM") - @visitTimeTo.ToString("HH:MM")</td>
+                <td>
+                    @StationFrom.Name -> <br />
+                    @StationTo.Name
+
+                </td>
+
+                @if (item.SelectedStationFrom != null)
+                {
+                    <td>
+                        <h2>@visitTimeFrom.ToShortTimeString()</h2>
+                        from @item.SelectedStationFrom.Name
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <h2>@visitTimeFrom.ToShortTimeString()</h2>
+                        from @StationFrom.Name
+                    </td>
+                }
+
+                @if (item.SelectedStationTo != null)
+                {
+                    <td>
+                        <h2>@visitTimeTo.ToShortTimeString()</h2> 
+                        to @item.SelectedStationTo.Name
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <h2>@visitTimeTo.ToShortTimeString()</h2> 
+                        to @StationTo.Name
+                    </td>
+                }
+
+                <td>
+                    @{ 
+                        var TravelTime = visitTimeTo.Subtract(visitTimeFrom);
+                    }
+                    @TravelTime
+                </td>
+                <td>
+                    @{ 
+                        var FreeSeats = 0;
+                        foreach(RailCar r in item.Train.RailCars)
+                        {
+                            foreach(Seat s in r.Seats)
+                            {
+                                if (!s.IsOccupied)
+                                    FreeSeats++;
+                            }
+                        }
+                    }
+                    @FreeSeats
+                </td>
                 @if (User.IsInRole("admin"))
                 {
                     <td>
@@ -94,7 +162,7 @@
                 @if (User.IsInRole("user"))
                 {
                     <td>
-                        <a asp-controller="Trip" asp-action="Update" asp-route-Id="@item.Id" class="btn btn-info mx-1">Buy</a>
+                        <a asp-controller="Reservation" asp-action="Create" asp-route-Trip="@item" class="btn btn-info mx-1">Select places</a>
                     </td>
                 }
             </tr>

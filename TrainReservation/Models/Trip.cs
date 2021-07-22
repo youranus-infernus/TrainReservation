@@ -13,5 +13,7 @@ namespace TrainReservation.Models
         public int TrainId { get; set; }
         public Train Train { get; set; }
         public List<VisitingStation> VisitingStations { get; set; }
+        public Station SelectedStationFrom { get; set; }
+        public Station SelectedStationTo { get; set; }
     }
 }
