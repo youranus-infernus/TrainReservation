@@ -1,0 +1,46 @@
+﻿@model IList<TrainReservation.Models.RailCar>
+
+
+<h1>Booking</h1>
+@{
+    int OccupiedCount = 0;
+}
+
+<form asp-action="Booking" asp-controller="Reservation" method="post">
+
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <p>Railcar: @Model[i].RailcarNumber</p>
+
+        @for (int j = 0; j < Model[i].Seats.Count; j++)
+        {
+            @if (Model[i].Seats[j].IsOccupied)
+            {
+                <input type="checkbox" asp-for="@Model[i].Seats[j].IsOccupied" disabled="disabled" />
+                OccupiedCount++;
+            }
+            else
+            {
+                <input type="checkbox" asp-for="@Model[i].Seats[j].IsOccupied" />
+            }
+            <label asp-for="@Model[i].Seats[j].SeatNumber">@Model[i].Seats[j].SeatNumber</label>
+            <input type="hidden" asp-for="@Model[i].Id" />
+            <input type="hidden" asp-for="@Model[i].RailcarNumber" />
+            <input type="hidden" asp-for="@Model[i].Train" />
+            <input type="hidden" asp-for="@Model[i].TrainId" />
+            <input type="hidden" asp-for="@Model[i].Seats[j].Id" />
+            <input type="hidden" asp-for="@Model[i].Seats[j].SeatNumber" />
+            <input type="hidden" asp-for="@Model[i].Seats[j].RailCar" />
+            <input type="hidden" asp-for="@Model[i].Seats[j].RailCarId" />
+            <input type="hidden" asp-for="@Model[i].Seats[j].Price" />
+            <input type="hidden" asp-for="@Model[i].Seats[j].IsOccupied" />
+            <input type="hidden" asp-for="@Model[i].Seats[j].IsDisabled" />
+            <input type="hidden" name="OccupiedCount" value="@OccupiedCount" />
+            <input type="hidden" name="TrainId" value="@ViewBag.TrainId" />
+
+        }
+    }
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+

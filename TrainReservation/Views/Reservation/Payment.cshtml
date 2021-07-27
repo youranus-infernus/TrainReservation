@@ -1,0 +1,155 @@
+﻿@model IList<TrainReservation.Models.Reservation>
+
+@functions{
+    public Station StationFrom { get; set; }
+    public Station StationTo { get; set; }
+
+    public DateTime visitTimeFrom { get; set; }
+    public DateTime visitTimeTo { get; set; }
+
+    public object FindFromTo(List<VisitingStation> VisitingStations, Station SelectedStationFrom, Station SelectedStationTo)
+    {
+        StationFrom = new Station { Name = "unknown" };
+        StationTo = new Station { Name = "unknown2" };
+        visitTimeFrom = new DateTime(0001, 1, 1, 1, 1, 1);
+        visitTimeTo = new DateTime(0001, 1, 1, 1, 1, 1);
+        if (VisitingStations != null && VisitingStations.Count > 0)
+        {
+            visitTimeFrom = VisitingStations.First().VisitTime;
+            visitTimeTo = VisitingStations.First().VisitTime;
+            foreach (VisitingStation v in VisitingStations)
+            {
+
+                if (SelectedStationFrom != null && SelectedStationFrom.Id == v.Station.Id)
+                {
+                    visitTimeFrom = v.VisitTime;
+                }
+                else
+                {
+                    if (DateTime.Compare(visitTimeFrom, v.VisitTime) >= 0)
+                    {
+                        visitTimeFrom = v.VisitTime;
+                        StationFrom = ViewBag.Stations.Find(v.StationId);
+                    }
+                }
+
+
+                if (SelectedStationTo != null && SelectedStationTo.Id == v.Station.Id)
+                {
+                    visitTimeTo = v.VisitTime;
+                }
+                else
+                {
+                    if (DateTime.Compare(visitTimeTo, v.VisitTime) <= 0)
+                    {
+                        visitTimeTo = v.VisitTime;
+                        StationTo = ViewBag.Stations.Find(v.StationId);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Train</th>
+            <th>Route</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Travel time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @FindFromTo(ViewBag.trip.VisitingStations, ViewBag.trip.SelectedStationFrom, ViewBag.trip.SelectedStationTo)
+        <tr>
+
+            @if (Model.Count > 0)
+            {
+                <td>
+                    @Model.First().Seat.RailCar.Train.Name
+                </td>
+            }
+
+            <td>
+
+                @ViewBag.trip.SelectedStationFrom.Name -> <br />
+                @ViewBag.trip.SelectedStationTo.Name
+            </td>
+
+            @if (ViewBag.trip.SelectedStationFrom != null)
+            {
+                <td>
+                    <h2>@visitTimeFrom.ToShortTimeString()</h2>
+                    from @ViewBag.trip.SelectedStationFrom.Name
+                </td>
+            }
+            else
+            {
+                <td>
+                    <h2>@visitTimeFrom.ToShortTimeString()</h2>
+                    from @StationFrom.Name
+                </td>
+            }
+
+            @if (ViewBag.trip.SelectedStationTo != null)
+            {
+                <td>
+                    <h2>@visitTimeTo.ToShortTimeString()</h2>
+                    to @ViewBag.trip.SelectedStationTo.Name
+                </td>
+            }
+            else
+            {
+                <td>
+                    <h2>@visitTimeTo.ToShortTimeString()</h2>
+                    to @StationTo.Name
+                </td>
+            }
+
+            <td>
+                @{
+                    var TravelTime = visitTimeTo.Subtract(visitTimeFrom);
+                }
+                @TravelTime
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@foreach (var reservation in Model)
+{
+    <div class="card">
+        <div class="card-header">
+            <h5 class="text-primary">Seat Number: @reservation.Seat.SeatNumber</h5>
+            <h6>Price: @reservation.Seat.Price</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <h6>Name: @reservation.PassengerName</h6>
+
+                <h6>Surname: @reservation.PassengerSurname</h6>
+
+                <h6>Discount: @reservation.Discount.Name - @reservation.Discount.Percent %</h6>
+            </div>
+        </div>
+    </div>
+    <br />
+}
+
+@{
+    double totalPrice = 0.0;
+    totalPrice = Math.Round(totalPrice, 2);
+    foreach (var reservation in Model)
+    {
+        totalPrice += (reservation.Seat.Price - (reservation.Seat.Price * reservation.Discount.Percent * 0.01));
+    }
+}
+<br />
+<h2>Total Price: @Math.Round(totalPrice, 2)</h2>
+
+

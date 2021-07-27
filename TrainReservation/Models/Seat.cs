@@ -15,5 +15,6 @@ namespace TrainReservation.Models
         public RailCar RailCar { get; set; }
         public int RailCarId { get; set; }
         public bool IsOccupied { get; set; }
+        public bool IsDisabled { get; set; }
     }
 }

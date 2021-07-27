@@ -1,0 +1,58 @@
+﻿@model IList<TrainReservation.ViewModels.ReservationViewModel>
+
+<form asp-action="Result" asp-controller="Reservation" method="post">
+
+    <h1 class="text">Enter the passenger data</h1>
+
+    @for (int j = 0; j < Model.Count; j++)
+    {
+        <input type="hidden" asp-for="@Model[j].Discounts" />
+        <input type="hidden" asp-for="@Model[j].Reservation.Id" />
+        <input type="hidden" asp-for="@Model[j].Reservation.SeatId" />
+        <input type="hidden" asp-for="@Model[j].Reservation.Seat" />
+        <input type="hidden" asp-for="@Model[j].Reservation.TrainReservationUser" />
+        <input type="hidden" asp-for="@Model[j].Reservation.TrainReservationUserId" />
+        <input type="hidden" name="TrainId" value="@ViewBag.TrainId" />
+
+
+        @*<h3 class="text-primary">Seat Number: @Model[j].Reservation.Seat.SeatNumber </h3>
+        <h3 class="text-primary">Price: @Model[j].Reservation.Seat.Price </h3>*@
+
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-primary">Seat Number: @Model[j].Reservation.Seat.SeatNumber</h5>
+                <h6>Price: @Model[j].Reservation.Seat.Price</h6>
+            </div>
+            <div class="card-body">
+                <div class="form-group" style="display:flex">
+                    <label for="name" class="col col-form-label">Name:</label>
+                    <input type="text" asp-for="@Model[j].Reservation.PassengerName" class="form-control" id="name" />
+
+                    <label for="surname" class="col col-form-label">Surname:</label>
+                    <input type="text" asp-for="@Model[j].Reservation.PassengerSurname" class="form-control" id="surname" />
+
+                    <label asp-for="@Model[j].Reservation.Discount" class="col col-form-label">Discount</label>
+                    <select asp-for="@Model[j].Reservation.DiscountId" class="form-control" asp-items="Model[j].Discounts"></select>
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        @*<div class="form-group" style="display:flex">
+            <label for="name" class="col-sm-1 col-form-label m-1">Name:</label>
+            <input type="text" asp-for="@Model[j].Reservation.PassengerName" class="form-control" id="name" name="Name" />
+
+            <label for="surname" class="col-sm-1 col-form-label">Surname:</label>
+            <input type="text" asp-for="@Model[j].Reservation.PassengerSurname" class="form-control" id="surname" name="Surname" />
+
+            <label asp-for="@Model[j].Reservation.Discount" class="col-sm-1 col-form-label m-1">Discount</label>
+            <select asp-for="@Model[j].Reservation.DiscountId" class="form-control" asp-items="Model[j].Discounts"></select>
+        </div>*@
+
+    }
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+

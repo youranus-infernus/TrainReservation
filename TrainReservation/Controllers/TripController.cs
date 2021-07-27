@@ -36,9 +36,9 @@ namespace TrainReservation.Controllers
             ViewBag.Stations = _db.Stations;
 
             IsDaysСoincide isDaysСoincide = (dateTime1, dateTime2) => (dateTime1.Year == dateTime2.Year &&
-                                                                                         dateTime1.Month == dateTime2.Month &&
-                                                                                         dateTime1.Day == dateTime2.Day &&
-                                                                                         dateTime1.TimeOfDay > dateTime2.TimeOfDay);
+                                                                       dateTime1.Month == dateTime2.Month &&
+                                                                       dateTime1.Day == dateTime2.Day &&
+                                                                       dateTime1.TimeOfDay > dateTime2.TimeOfDay);
 
             if (SelectedDateTime.Year != 0001)
             { 
@@ -60,6 +60,32 @@ namespace TrainReservation.Controllers
                              select t).ToList();
             }
 
+            if(result.Count > 0)
+            {
+                foreach (Trip trip in result)
+                {
+                    if (trip.VisitingStations.Count > 0)
+                    {
+                        var FromVisit = trip.VisitingStations.First();
+                        var ToVisit = trip.VisitingStations.First();
+
+                        foreach (var visit in trip.VisitingStations)
+                        {
+                            if (visit.VisitTime < FromVisit.VisitTime)
+                                FromVisit = visit;
+
+                            if(visit.VisitTime > ToVisit.VisitTime)
+                                ToVisit = visit;
+                        }
+
+                        trip.SelectedStationFrom = FromVisit.Station;
+                        trip.SelectedStationTo = ToVisit.Station;
+                    }
+                }
+            }
+           
+                    
+
             if (!String.IsNullOrEmpty(StationFromName) && !String.IsNullOrEmpty(StationToName))
             {
 
@@ -74,19 +100,19 @@ namespace TrainReservation.Controllers
                                select trip;
                 
                 result = selected.ToList();
-                
-               
 
-                if(result.Count() > 0)
+
+
+                if (result.Count() > 0)
                 {
                     foreach (Trip trip in result)
                     {
                         var FromVisit = trip.VisitingStations.First(v => v.Station.Name.Contains(StationFromName));
-                        var ToVisit = trip.VisitingStations.First(v => v.Station.Name.Contains(StationToName)); ;
+                        var ToVisit = trip.VisitingStations.First(v => v.Station.Name.Contains(StationToName));
 
-                        if(FromVisit.VisitTime < ToVisit.VisitTime)
+                        if (FromVisit.VisitTime < ToVisit.VisitTime)
                         {
-                            if(SelectedDateTime.Year != 0001)
+                            if (SelectedDateTime.Year != 0001)
                             {
                                 if (isDaysСoincide(FromVisit.VisitTime, SelectedDateTime))
                                 {
@@ -103,9 +129,12 @@ namespace TrainReservation.Controllers
                             }
                         }
                     }
+                    _db.SaveChanges();
                     return View(superresult.ToList());
-                }
+                }   
             }
+            
+            _db.SaveChanges();
             return View(result.ToList());
         }
 

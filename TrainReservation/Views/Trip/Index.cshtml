@@ -162,7 +162,7 @@
                 @if (User.IsInRole("user"))
                 {
                     <td>
-                        <a asp-controller="Reservation" asp-action="Create" asp-route-Trip="@item" class="btn btn-info mx-1">Select places</a>
+                        <a asp-controller="Reservation" asp-action="Booking" asp-route-TrainId="@item.TrainId" class="btn btn-info mx-1">Select places</a>
                     </td>
                 }
             </tr>

@@ -16,6 +16,9 @@ namespace TrainReservation.Models
         public Seat Seat { get; set; }
         public int SeatId { get; set; }
         public TrainReservationUser TrainReservationUser { get; set; }
+        public string SessionKey { get; set; }
         public string TrainReservationUserId { get; set; }
+        public string PassengerName { get; set; }
+        public string PassengerSurname { get; set; }
     }
 }
