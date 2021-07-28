@@ -1,8 +1,19 @@
 ﻿@model IList<TrainReservation.ViewModels.ReservationViewModel>
 
-<form asp-action="Result" asp-controller="Reservation" method="post">
+    
+    <div class="d-flex justify-content-between  ml-5 mr-5 pl-5 pr-5">
+        <h5>Choosing places</h5>
+        <h5>Passenger data</h5>
+        <h5>Payment</h5>
+    </div>
 
-    <h1 class="text">Enter the passenger data</h1>
+    <div class="progress" style="height: 20px;">
+        <div class="progress-bar" role="progressbar" style="width: 66%;" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+<br />
+<form asp-action="PessengerData" asp-controller="Reservation" method="post">
+
+ 
 
     @for (int j = 0; j < Model.Count; j++)
     {
@@ -13,11 +24,6 @@
         <input type="hidden" asp-for="@Model[j].Reservation.TrainReservationUser" />
         <input type="hidden" asp-for="@Model[j].Reservation.TrainReservationUserId" />
         <input type="hidden" name="TrainId" value="@ViewBag.TrainId" />
-
-
-        @*<h3 class="text-primary">Seat Number: @Model[j].Reservation.Seat.SeatNumber </h3>
-        <h3 class="text-primary">Price: @Model[j].Reservation.Seat.Price </h3>*@
-
 
         <div class="card">
             <div class="card-header">
@@ -39,17 +45,6 @@
         </div>
 
         <br />
-
-        @*<div class="form-group" style="display:flex">
-            <label for="name" class="col-sm-1 col-form-label m-1">Name:</label>
-            <input type="text" asp-for="@Model[j].Reservation.PassengerName" class="form-control" id="name" name="Name" />
-
-            <label for="surname" class="col-sm-1 col-form-label">Surname:</label>
-            <input type="text" asp-for="@Model[j].Reservation.PassengerSurname" class="form-control" id="surname" name="Surname" />
-
-            <label asp-for="@Model[j].Reservation.Discount" class="col-sm-1 col-form-label m-1">Discount</label>
-            <select asp-for="@Model[j].Reservation.DiscountId" class="form-control" asp-items="Model[j].Discounts"></select>
-        </div>*@
 
     }
     <br />

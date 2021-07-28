@@ -12,6 +12,7 @@ using TrainReservation.ViewModels;
 
 namespace TrainReservation.Controllers
 {
+    [Authorize]
     public class TripController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -28,6 +29,13 @@ namespace TrainReservation.Controllers
         {
             var visitingStations = _db.VisitingStations.Include(t => t.Station).Include(t => t.Trip).ToList();
             var trips = _db.Trips.Include(t => t.Train).ThenInclude(r => r.RailCars).ThenInclude(s => s.Seats);
+
+            var seats = _db.Seats.Where(t => t.IsOccupied == true && t.IsDisabled == false).ToList();
+
+            foreach (var seat in seats)
+                seat.IsOccupied = false;
+
+            _db.SaveChanges();
 
             List<Trip> result = new List<Trip>();
             List<Trip> superresult = new List<Trip>();
@@ -64,7 +72,7 @@ namespace TrainReservation.Controllers
             {
                 foreach (Trip trip in result)
                 {
-                    if (trip.VisitingStations.Count > 0)
+                    if (trip.VisitingStations != null && trip.VisitingStations.Count > 0)
                     {
                         var FromVisit = trip.VisitingStations.First();
                         var ToVisit = trip.VisitingStations.First();

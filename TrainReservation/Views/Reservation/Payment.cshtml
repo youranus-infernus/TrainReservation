@@ -52,7 +52,17 @@
     }
 }
 
+<div class="d-flex justify-content-between  ml-5 mr-5 pl-5 pr-5">
+    <h5>Choosing places</h5>
+    <h5>Passenger data</h5>
+    <h5>Payment</h5>
+</div>
 
+<div class="progress" style="height: 20px;">
+    <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+<br />
 
 <table class="table">
     <thead>
@@ -150,6 +160,10 @@
     }
 }
 <br />
-<h2>Total Price: @Math.Round(totalPrice, 2)</h2>
+<div class="d-flex justify-content-between  ">
+    <h2>Total Price: @Math.Round(totalPrice, 2)</h2>
+    <a type="button" href="/Home/Index" class="btn btn-primary">Pay</a>
+</div>
+
 
 

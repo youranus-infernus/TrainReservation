@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,6 +15,7 @@ using TrainReservation.ViewModels;
 
 namespace TrainReservation.Controllers
 {
+    [Authorize]
     public class ReservationController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -27,6 +29,13 @@ namespace TrainReservation.Controllers
         {
             ViewBag.TrainId = TrainId;
             var RailcarList = _db.RailCars.Include(s => s.Seats).Where(r => r.TrainId == TrainId).ToList();
+
+            var seats = _db.Seats.Where(t => t.IsOccupied == true && t.IsDisabled == false).ToList();
+
+            foreach (var seat in seats)
+                seat.IsOccupied = false;
+
+            _db.SaveChanges();
             return View(RailcarList);
         }
 
@@ -34,17 +43,15 @@ namespace TrainReservation.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Booking(List<RailCar> RailcarList, int TrainId)
         {
-            
-            List<Seat> selectedSeats = new List<Seat>();
             if (RailcarList != null && RailcarList.Count > 0)
             {
-                _db.Trains.Find(RailcarList.First().TrainId).RailCars = RailcarList;
+                _db.Trains.Find(TrainId).RailCars = RailcarList;
                 _db.SaveChanges();
             }
-            return RedirectToAction("Result", new {TrainId = TrainId });
+            return RedirectToAction("PessengerData", new {TrainId = TrainId });
         }
 
-        public IActionResult Result(int TrainId)
+        public IActionResult PessengerData(int TrainId)
         {
             List<ReservationViewModel> reservationViewModels = new List<ReservationViewModel>();
             Train train = _db.Trains.Include(t => t.RailCars).ThenInclude(r => r.Seats).First(t => t.Id == TrainId);
@@ -82,7 +89,7 @@ namespace TrainReservation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Result(List<ReservationViewModel> reservationViewModels)
+        public IActionResult PessengerData(List<ReservationViewModel> reservationViewModels)
         {
             Generator generator = new Generator();
             List<int> reservations = new List<int>();
@@ -93,7 +100,6 @@ namespace TrainReservation.Controllers
                 foreach(var reservationViewModel in reservationViewModels)
                 {
                     Seat seat = _db.Seats.Find(reservationViewModel.Reservation.SeatId);
-                    //seat.IsDisabled = true;
                     Discount discount = _db.Discounts.Find(reservationViewModel.Reservation.DiscountId);
                     TrainReservationUser user = _db.Users.Find(reservationViewModel.Reservation.TrainReservationUserId);
 
@@ -111,9 +117,6 @@ namespace TrainReservation.Controllers
                     _db.SaveChanges();
                     reservations.Add(_db.Reservations.First(r => r.SeatId == seat.Id).Id);
                 }
-
-
-                
                 return RedirectToAction("Payment", new { SessionKey = SessionKey});
             }
             return View();
@@ -143,17 +146,28 @@ namespace TrainReservation.Controllers
                 trip = _db.Trips.Include(s => s.SelectedStationFrom).Include(s => s.SelectedStationTo).Include(v => v.VisitingStations).ThenInclude(s => s.Station).First(t => t.TrainId == trainId);
             }
 
+            foreach(var reservation in reservations)
+            {
+                reservation.Seat.IsDisabled = true;
+            }
+
+            _db.SaveChanges();
             ViewBag.trip = trip;
             ViewBag.Stations = _db.Stations;
 
             return View(reservations);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Payment(List<RailCar> RailcarList, int TrainId)
+       
+        public IActionResult MyTickets()
         {
-            return Redirect("/Home/Index");
+            ClaimsPrincipal claimsPrincipal = this.User;
+            var currentUserID = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var thisUserReservations = _db.Reservations.Include(r => r.Seat).Include(r => r.Discount).Where(r => r.TrainReservationUserId == currentUserID).ToList();
+
+            return View(thisUserReservations);
         }
+
     }
 }

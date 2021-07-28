@@ -22,33 +22,28 @@
             visitTimeTo = VisitingStations.First().VisitTime;
             foreach (VisitingStation v in VisitingStations)
             {
+                if (DateTime.Compare(visitTimeFrom, v.VisitTime) >= 0)
+                    StationFrom = ViewBag.Stations.Find(v.StationId);
+                
+                if (DateTime.Compare(visitTimeTo, v.VisitTime) <= 0)
+                    StationTo = ViewBag.Stations.Find(v.StationId);
+                
 
                 if (SelectedStationFrom != null && SelectedStationFrom.Id == v.Station.Id)
-                {
                     visitTimeFrom = v.VisitTime;
-                }
+                
                 else
-                {
                     if (DateTime.Compare(visitTimeFrom, v.VisitTime) >= 0)
-                    {
                         visitTimeFrom = v.VisitTime;
-                        StationFrom = ViewBag.Stations.Find(v.StationId);
-                    }
-                }
 
 
                 if (SelectedStationTo != null && SelectedStationTo.Id == v.Station.Id)
-                {
                     visitTimeTo = v.VisitTime;
-                }
+
                 else
-                {
                     if (DateTime.Compare(visitTimeTo, v.VisitTime) <= 0)
-                    {
                         visitTimeTo = v.VisitTime;
-                        StationTo = ViewBag.Stations.Find(v.StationId);
-                    }
-                }
+                          
             }
         }
         return null;

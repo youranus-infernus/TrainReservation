@@ -1,0 +1,32 @@
+﻿@model IList<TrainReservation.Models.Reservation>
+
+<h1>MyTickets</h1>
+
+@if (Model.Count > 0)
+{
+    foreach (var reservation in Model)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-primary">Seat Number: @reservation.Seat.SeatNumber</h5>
+                <h6>Price: @reservation.Seat.Price</h6>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <h6>Name: @reservation.PassengerName</h6>
+
+                    <h6>Surname: @reservation.PassengerSurname</h6>
+
+                    <h6>Discount: @reservation.Discount.Name - @reservation.Discount.Percent %</h6>
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+ }
+ else
+ {
+<p>You don't have any tickets purchased</p>
+ }
+
+

@@ -1,16 +1,22 @@
 ﻿@model IList<TrainReservation.Models.RailCar>
 
-
-<h1>Booking</h1>
 @{
     int OccupiedCount = 0;
 }
-
+<div class="d-flex justify-content-between  ml-5 mr-5 pl-5 pr-5">
+    <h5>Choosing places</h5>
+    <h5>Passenger data</h5>
+    <h5>Payment</h5>
+</div>
+<div class="progress" style="height: 20px;">
+    <div class="progress-bar" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<br />
 <form asp-action="Booking" asp-controller="Reservation" method="post">
 
     @for (int i = 0; i < Model.Count; i++)
     {
-        <p>Railcar: @Model[i].RailcarNumber</p>
+        <h5>Railcar: @Model[i].RailcarNumber</h5>
 
         @for (int j = 0; j < Model[i].Seats.Count; j++)
         {
@@ -40,6 +46,7 @@
 
         }
     }
+    <br />
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
