@@ -1,10 +1,10 @@
 
 # TrainReservation
 
-An application for booking seats on the train
+An application for booking seats on the train <br/>
 
-Ticket booking is carried out as follows
-You need to choose a suitable route
+Ticket booking is carried out as follows <br/>
+You need to choose a suitable route <br/> 
 You can use the search, select the desired stations and day.
 If the two stations indicated in the search are visited on a certain route in chronological order, then the route is suitable.
 
