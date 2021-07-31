@@ -41,4 +41,4 @@ The earliest visit becomes the departure point of the train, and the latest visi
 ![CRUD Trip](https://user-images.githubusercontent.com/74061165/127734568-382f7ff7-c3e3-4260-b8fc-58659ebcd538.gif)
 
 
-
+The admin's email and password are located in /Initializers/RoleInitializer.cs
