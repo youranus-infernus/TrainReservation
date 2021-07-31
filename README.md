@@ -21,11 +21,16 @@ After confirming the reservation, the reserved seats can be seen in the My Ticke
 <br/>
 The application also allows the administrator to create, modify, and delete trains, stations and trips. <br/>
 In the case of stations, everything looks as simple as possible. <br/>
+<br/>
+
+![CreateStation](https://user-images.githubusercontent.com/74061165/127347650-a5d90573-f05d-451d-bc0e-4b5abf969f77.gif)
+
 When creating a train, you need to enter only its name <br/>
 Then you can create cars on this train and seats in the created car. <br/>
 All this can also be changed and deleted <br/>
 <br/>
 
-![CreateStation](https://user-images.githubusercontent.com/74061165/127347650-a5d90573-f05d-451d-bc0e-4b5abf969f77.gif)
+![CRUD Train](https://user-images.githubusercontent.com/74061165/127734296-6c488ac4-1239-48ae-b1af-8b7b019519d1.gif)
+
 
 
