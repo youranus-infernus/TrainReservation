@@ -6,8 +6,7 @@
 To reserve a seat, you need to choose a suitable route <br/> 
 You can use the search, select the desired stations and day. <br/>
 If the two stations indicated in the search are visited on a certain route in chronological order, then the route is suitable. <br/>
-The time and station![CRUD Trip](https://user-images.githubusercontent.com/74061165/127734550-8ce1c1dd-00eb-4a62-b67c-d72ad907d7c4.gif)
- of departure and arrival changes according to the selected stations <br/>
+The time and station of departure and arrival changes according to the selected stations <br/>
 
 Then all the railcars of this train appear on the screen with seats in the form of checkboxes. <br/>
 Previously reserved seats will not be available for selection <br/>
