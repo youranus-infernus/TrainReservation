@@ -32,5 +32,9 @@ All this can also be changed and deleted <br/>
 
 ![CRUD Train](https://user-images.githubusercontent.com/74061165/127734296-6c488ac4-1239-48ae-b1af-8b7b019519d1.gif)
 
+To create a new route, the admin must select a train <br/>
+Then the administrator adds a visit to certain stations at a certain time <br/>
+The earliest visit becomes the departure point of the train, and the latest visit becomes the destination <br/>
+
 
 
