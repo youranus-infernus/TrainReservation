@@ -3,8 +3,7 @@
 
 <h3>An application for booking seats on the train </h3>
 
-Ticket booking is carried out as follows <br/>
-You need to choose a suitable route <br/> 
+To reserve a seat, you need to choose a suitable route <br/> 
 You can use the search, select the desired stations and day. <br/>
 If the two stations indicated in the search are visited on a certain route in chronological order, then the route is suitable. <br/>
 
