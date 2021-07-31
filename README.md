@@ -1,7 +1,7 @@
 
 # TrainReservation
 
-<h4>An application for booking seats on the train </h4> <br/>
+<h3>An application for booking seats on the train </h3>
 
 Ticket booking is carried out as follows <br/>
 You need to choose a suitable route <br/> 
