@@ -14,12 +14,15 @@ After choosing the right seats, you need to enter the first and last name of the
 Then a summary page will appear with a description of the route and a list of reserved seats. <br/> 
 After confirming the reservation, the reserved seats can be seen in the My Tickets tab <br/>
 
+
 ![Boocking Seat](https://user-images.githubusercontent.com/74061165/127734060-35a02eb4-c3d9-40a2-b5cd-7088d09a1bbe.gif)
+
 
 <br/>
 The application also allows the administrator to create, modify, and delete trains, stations and trips. <br/>
 In the case of stations, everything looks as simple as possible. <br/>
-When creating a train, you need to enter only its name, then you can create cars on this train and seats in the created car. <br/>
+When creating a train, you need to enter only its name <br/>
+Then you can create cars on this train and seats in the created car. <br/>
 All this can also be changed and deleted <br/>
 
 
