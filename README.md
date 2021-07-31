@@ -10,7 +10,8 @@ If the two stations indicated in the search are visited on a certain route in ch
 Then all the railcars of this train appear on the screen with seats in the form of checkboxes. <br/>
 Previously reserved seats will not be available for selection <br/>
 After choosing the right seats, you need to enter the first and last name of the passenger who will use this place, and also choose a discount <br/>
-Then a summary page will appear with a description of the route and a list of reserved seats. <br/>
+
+Then a summary page will appear with a description of the route and a list of reserved seats. <br/> 
 After confirming the reservation, the reserved seats can be seen in the My Tickets tab <br/>
 
 ![Boocking Seat](https://user-images.githubusercontent.com/74061165/127734060-35a02eb4-c3d9-40a2-b5cd-7088d09a1bbe.gif)
